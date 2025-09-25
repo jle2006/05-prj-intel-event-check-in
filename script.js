@@ -149,4 +149,4 @@ window.addEventListener("load", loadProgress);
 
 // Greeting
 function showGreeting(name, team) {
-
+}
