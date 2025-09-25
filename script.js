@@ -126,13 +126,19 @@ function loadProgress() {
 // Reset button
 resetBtn.addEventListener("click", () => {
   if (confirm("Are you sure you want to reset all check-ins?")) {
+    // Clear only relevant keys
+    localStorage.removeItem("attendees");
+    localStorage.removeItem("teams");
+
+    // Reset data
     allAttendees = [];
     for (const team in teams) {
       teams[team] = [];
     }
-    localStorage.clear();
-    updateCounts();
+
+    // Clear greeting and update UI
     greetingEl.textContent = "";
+    updateCounts();
   }
 });
 
