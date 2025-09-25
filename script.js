@@ -14,13 +14,14 @@ const teamSelect = document.getElementById("teamSelect");
 const attendeeCountEl = document.getElementById("attendeeCount");
 const progressBar = document.getElementById("progressBar");
 const greetingEl = document.getElementById("greeting");
+const resetBtn = document.getElementById("resetBtn");
 const teamCounts = {
   water: document.getElementById("waterCount"),
   zero: document.getElementById("zeroCount"),
   power: document.getElementById("powerCount"),
 };
 
-// Event Listener
+// Submit handler
 form.addEventListener("submit", function (e) {
   e.preventDefault();
 
@@ -42,16 +43,26 @@ form.addEventListener("submit", function (e) {
     return;
   }
 
-  // Update data
   teams[team].push(name);
   allAttendees.push(name);
 
-  // Update UI
   updateCounts();
   showGreeting(name, team);
+  saveProgress();
   form.reset();
 });
 
+// Greeting
+function showGreeting(name, team) {
+  const teamNames = {
+    water: "Team Water Wise",
+    zero: "Team Net Zero",
+    power: "Team Renewables",
+  };
+  greetingEl.textContent = `Welcome, ${name}! You've been checked into ${teamNames[team]}.`;
+}
+
+// Update UI
 function updateCounts() {
   attendeeCountEl.textContent = allAttendees.length;
   const progress = (allAttendees.length / TOTAL_CAPACITY) * 100;
@@ -75,32 +86,7 @@ function updateCounts() {
   }
 }
 
-// Show personalized greeting
-function showGreeting(name, team) {
-  const teamNames = {
-    water: "Team Water Wise",
-    zero: "Team Net Zero",
-    power: "Team Renewables",
-  };
-
-  greetingEl.textContent = `Welcome, ${name}! You've been checked into ${teamNames[team]}.`;
-}
-function updateCounts() {
-  attendeeCountEl.textContent = allAttendees.length;
-  const progress = (allAttendees.length / TOTAL_CAPACITY) * 100;
-  progressBar.style.width = `${progress}%`;
-
-  for (const team in teams) {
-    teamCounts[team].textContent = teams[team].length;
-  }
-
-  // 🎉 Celebration trigger
-  if (allAttendees.length === TOTAL_CAPACITY) {
-    const winningTeam = getWinningTeam();
-    alert(`🎉 Attendance goal reached! ${winningTeam} has the most attendees!`);
-  }
-}
-
+// Determine winning team
 function getWinningTeam() {
   let max = 0;
   let winner = "No team";
@@ -116,13 +102,14 @@ function getWinningTeam() {
   }
   return winner;
 }
-// Save to localStorage
+
+// Save progress
 function saveProgress() {
   localStorage.setItem("attendees", JSON.stringify(allAttendees));
   localStorage.setItem("teams", JSON.stringify(teams));
 }
 
-// Load from localStorage
+// Load progress
 function loadProgress() {
   const savedAttendees = JSON.parse(localStorage.getItem("attendees"));
   const savedTeams = JSON.parse(localStorage.getItem("teams"));
@@ -136,5 +123,18 @@ function loadProgress() {
   }
 }
 
-// Call on page load
+// Reset button
+resetBtn.addEventListener("click", () => {
+  if (confirm("Are you sure you want to reset all check-ins?")) {
+    allAttendees = [];
+    for (const team in teams) {
+      teams[team] = [];
+    }
+    localStorage.clear();
+    updateCounts();
+    greetingEl.textContent = "";
+  }
+});
+
+// Load on page start
 window.addEventListener("load", loadProgress);
