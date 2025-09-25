@@ -3,7 +3,7 @@ const TOTAL_CAPACITY = 50;
 const teams = {
   water: [],
   zero: [],
-  power: [],
+  power: []
 };
 let allAttendees = [];
 
@@ -17,7 +17,7 @@ const greetingEl = document.getElementById("greeting");
 const teamCounts = {
   water: document.getElementById("waterCount"),
   zero: document.getElementById("zeroCount"),
-  power: document.getElementById("powerCount"),
+  power: document.getElementById("powerCount")
 };
 
 // Event Listener
@@ -71,7 +71,7 @@ function showGreeting(name, team) {
   const teamNames = {
     water: "Team Water Wise",
     zero: "Team Net Zero",
-    power: "Team Renewables",
+    power: "Team Renewables"
   };
 
   greetingEl.textContent = `Welcome, ${name}! You've been checked into ${teamNames[team]}.`;
