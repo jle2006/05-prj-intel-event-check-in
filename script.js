@@ -138,9 +138,3 @@ function loadProgress() {
 
 // Call on page load
 window.addEventListener("load", loadProgress);
-
-// Call after each check-in
-form.addEventListener("submit", function (e) {
-  // ... existing check-in logic ...
-  saveProgress();
-});
